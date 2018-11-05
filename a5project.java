@@ -1,5 +1,7 @@
+package a5project;
+
 import java.io.*;
-import java.sql.*;
+//import java.sql.*;
 import java.util.*;
 
 /**
@@ -8,53 +10,75 @@ import java.util.*;
  */
 
 public class a5project {
-    boolean run = true;
-    
+	
+	public static void main (String[] args) throws IOException
+	{
+	Scanner in = new Scanner(System.in);
+	boolean run = true;
+	
     while (run) 
     {
-        System.out.println("Please log-in as either an C)lerk or a M)anager.  Enter 'Q' at any time to quit.");
+        System.out.print("Please log-in as either an C)lerk or a M)anager (Enter 'Q' at any time to quit): ");
         String cmd = in.nextLine();
+        
         if (cmd.equalsIgnoreCase("Q"))
         {
             run = false;
         }
         else if (cmd.equalsIgnoreCase("C"))
         {
-            System.out.println("Enter Clerk ID: ");
-            String n = in.nextLine();  //or integer n, I think either way would work - @dazobler
-                /* if (Class.Method(n) for checking if clerk ID exists returns true) 
+        	Scanner in2 = new Scanner (System.in); 
+        	System.out.printf("\nEnter Clerk ID: ");
+            String n = in2.nextLine();  //or integer n, I think either way would work - @dazobler
+            File input = new File("EmployeeDB(Text).txt");
+                if (n.matches(".*[0-9].*")) 
                 {
-                int index = Collections.binarySearch(byClerk, new Item(n, null));
-                System.out.printf("Hello %s.  ", byClerk.get(index).getValue());
-                    while (run2) {
-                        Class2.Method() returns that allows clerk to conduct sales, update info, etc.;
-                    }
+                	boolean run2 = true;
+                	System.out.println("Clerk success");
+                	//int index = Collections.binarySearch(byClerk, new Item(n, null));
+                	//System.out.printf("Hello %s.  ", byClerk.get(index).getValue());
+                    //while (run2) {
+                    //    Class2.Method() returns that allows clerk to conduct sales, update info, etc.;
+                    //}
                 }
                 else if(n.equalsIgnoreCase("Q"))
                 {
-                    run = false;
+                	in2.close();
+                    System.out.println("");
                 }
-                else { System.out.println("That Clerk does not exist.  Please try again.");}
-                */
+                else { in2.close(); System.out.println("That Clerk does not exist.  Please try again.");}
+                
         }
         
         else if (cmd.equalsIgnoreCase("M"))
         {
+        	Scanner in2 = new Scanner(System.in);
             System.out.println("Enter Manager ID: ");
-            String n = in.nextLine();  //or integer n, I think either way would work - @dazobler
-                /* if (Class.Method(n) for checking if manager ID exists returns true) 
-                {
-                int index = Collections.binarySearch(byManager, new Item(n, null));
-                System.out.printf("Hello %s.  ", byManager.get(index).getValue());
-                    while (run2) {
-                        Class2.Method() returns that allows Manager to conduct sales, update info, etc.;
-                    }
+            
+            String n = in2.nextLine(); //or integer n, I think either way would work - @dazobler  
+            
+            if (n.matches(".*[0-9].*")) 
+            {
+            boolean run2 = true;
+        	System.out.println("Manager success");
+            
+            //if (Class.Method(n) for checking if manager ID exists returns true) 
+            //    {
+                //int index = Collections.binarySearch(byManager, new Item(n, null));
+                //System.out.printf("Hello %s.  ", byManager.get(index).getValue());
+                //    while (run2) {
+                //        Class2.Method() returns that allows Manager to conduct sales, update info, etc.;
+                //    }
                 }
                 else if(n.equalsIgnoreCase("Q"))
                 {
-                    run = false;
+                    in2.close();
+                	run = false;
                 }
-                else { System.out.println("That Manager does not exist.");}
-        */
+                else { in2.close(); System.out.println("That Manager does not exist.");}
+        
         }
+    }
+    in.close();
+}
 }
