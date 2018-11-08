@@ -15,7 +15,7 @@ public class a5project {
 	{
 	Scanner in = new Scanner(System.in);
 	boolean run = true;
-	
+	boolean clearance = false;
     while (run) 
     {
         System.out.print("Please log-in as either an C)lerk or a M)anager (Enter 'Q' at any time to quit): ");
@@ -24,59 +24,24 @@ public class a5project {
         if (cmd.equalsIgnoreCase("Q"))
         {
             run = false;
+            Login.logOut(run);
         }
         else if (cmd.equalsIgnoreCase("C"))
         {
-        	Scanner in2 = new Scanner (System.in); 
         	System.out.printf("\nEnter Clerk ID: ");
-            String n = in2.nextLine();  //or integer n, I think either way would work - @dazobler
-            File input = new File("EmployeeDB(Text).txt");
-                if (n.matches(".*[0-9].*")) 
-                {
-                	boolean run2 = true;
-                	System.out.println("Clerk success");
-                	//int index = Collections.binarySearch(byClerk, new Item(n, null));
-                	//System.out.printf("Hello %s.  ", byClerk.get(index).getValue());
-                    //while (run2) {
-                    //    Class2.Method() returns that allows clerk to conduct sales, update info, etc.;
-                    //}
-                }
-                else if(n.equalsIgnoreCase("Q"))
-                {
-                	in2.close();
-                    System.out.println("");
-                }
-                else { in2.close(); System.out.println("That Clerk does not exist.  Please try again.");}
-                
+            String n = in.nextLine();
+        	if (Login.logInC(n, clearance)) {
+        		//other methods start going here
+        	}
         }
         
         else if (cmd.equalsIgnoreCase("M"))
         {
-        	Scanner in2 = new Scanner(System.in);
-            System.out.println("Enter Manager ID: ");
-            
-            String n = in2.nextLine(); //or integer n, I think either way would work - @dazobler  
-            
-            if (n.matches(".*[0-9].*")) 
-            {
-            boolean run2 = true;
-        	System.out.println("Manager success");
-            
-            //if (Class.Method(n) for checking if manager ID exists returns true) 
-            //    {
-                //int index = Collections.binarySearch(byManager, new Item(n, null));
-                //System.out.printf("Hello %s.  ", byManager.get(index).getValue());
-                //    while (run2) {
-                //        Class2.Method() returns that allows Manager to conduct sales, update info, etc.;
-                //    }
-                }
-                else if(n.equalsIgnoreCase("Q"))
-                {
-                    in2.close();
-                	run = false;
-                }
-                else { in2.close(); System.out.println("That Manager does not exist.");}
-        
+        	System.out.printf("\nEnter Manager ID: ");
+            String n = in.nextLine();
+            if (Login.logInM(n, clearance)) {
+        		//manager methods start here
+        	}
         }
     }
     in.close();
