@@ -10,10 +10,11 @@ import java.util.*;
  */
 
 public class a5project {
+	public static Scanner in = new Scanner(System.in);
 	
 	public static void main (String[] args) throws IOException
 	{
-	Scanner in = new Scanner(System.in);
+
 	boolean run = true;
 	boolean clearance = false;
     while (run) 
@@ -31,7 +32,7 @@ public class a5project {
         	System.out.printf("\nEnter Clerk ID: ");
             String n = in.nextLine();
         	if (Login.logInC(n, clearance)) {
-        		//other methods start going here
+        		Employees.Clerk();
         	}
         }
         
@@ -40,6 +41,7 @@ public class a5project {
         	System.out.printf("\nEnter Manager ID: ");
             String n = in.nextLine();
             if (Login.logInM(n, clearance)) {
+            	Employees.Manager();
         		//manager methods start here
         	}
         }
