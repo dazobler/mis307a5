@@ -1,12 +1,17 @@
 package a5project;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 /**
  * @authors Axell, Derek, Austin
@@ -21,7 +26,7 @@ public class FiguresDB extends a5project {
     		boolean loop = true;
     		while(loop)
     		{
-                System.out.printf("\nSelect P)roducts  S)Suppliers  B)ack:  ");//Might just change this to one big menu.  Yes/no?
+                System.out.printf("\nP)roducts Menu  S)Suppliers Menu  B)ack:  ");//Might just change this to one big menu.  Yes/no?
                 String option = in.next();
                 
                 //Quit figures menu, return to employee menu
@@ -36,12 +41,16 @@ public class FiguresDB extends a5project {
                 {
                 	boolean run = true;
                 	while(run) {
-                	System.out.print("\nSelect A)dd a figure  R)etrieve Web Price  G)et Product Info  P)rint product table  "
+                	System.out.print("\nSelect A)dd a figure  G)et Product Info  P)rint product table  "
                 			+ "U)pdate Figure  B)ack: ");
                     String select = in.next();
                     
                     //Return to next higher menu
                     if(select.equalsIgnoreCase("B")) {	run = false; }
+        	        
+                    else if (option.equalsIgnoreCase("Q")) {
+        	        	Login.logOut(run);
+        	        }
                     
                     //Add a figure
                     else if(select.equalsIgnoreCase("A")) {
@@ -56,13 +65,14 @@ public class FiguresDB extends a5project {
                     	addFigure(pname, qty, price, sid);
                     }
                     
-                    //Retrieve price
+                    /**Compare price of product in store to online price
+                     * 
                     else if(select.equalsIgnoreCase("R")) {
-                    	System.out.println("Enter Product ID: ");
+                    	System.out.printf("\nEnter Product ID: ");
                     	int pid = in.nextInt();
-                    	System.out.println("Work In Progress. The toy associated with "+pid+" will be compared soon.");
-                    	//webSearch(pid);
+                    	webSearch(pid);
                     }
+                    */
                     
                     //Get product information
                     else if(select.equalsIgnoreCase("G")) {
@@ -97,6 +107,10 @@ public class FiguresDB extends a5project {
                         
                         //Back
                         if(select.equalsIgnoreCase("B")) { run = false; }
+                        
+                        else if (option.equalsIgnoreCase("Q")) {
+            	        	Login.logOut(run);
+            	        }
                         
                         //Add supplier
                         else if (select.equalsIgnoreCase("A")){
@@ -138,6 +152,7 @@ public class FiguresDB extends a5project {
     		//End of figuresMenu
     	}
         
+    	//Adds a figure to the Inventory Table
     	public static void addFigure(String pname, int qty, double price, int sid) throws SQLException
     	{
     	    Connection conn = SimpleDataSource.getConnection();
@@ -146,7 +161,9 @@ public class FiguresDB extends a5project {
     		stat.close();
         }
     	
-    	public static void webSearch(int pid) throws SQLException {
+    	//Might have to call this one a bust...
+    	/**
+    	public static void webSearch(int pid) throws SQLException, Exception {
     		
     		Connection conn = SimpleDataSource.getConnection();
     		Statement stat = conn.createStatement();
@@ -155,22 +172,40 @@ public class FiguresDB extends a5project {
     		String name = result.getString("ProductName");
     		double r = result.getInt("Price");
     		
-    		
-    		double wr = 1;
-    		String name2 = "";
-    		
-    		if (r > wr) {
-    			System.out.println("The store price of "+name+" is superior at $"+r+"!  What a deal!");
+    		String formatModelName=name.replaceAll(" ", "-");
+            //ONLY WORKS on GUNDAM PLANET WEBSITE!!!
+            String urlString = "https://www.gundamplanet.com/"+formatModelName+".html";
 
+            URL u = new URL(urlString);
+
+            URLConnection connection = u.openConnection();
+            HttpURLConnection httpConnection = (HttpURLConnection) connection;
+            InputStream instream = connection.getInputStream();
+            Scanner in2 = new Scanner(instream);
+
+            String input = in2.nextLine();
+             
+            if(input.contains("product:price:amount")){
+                 int indexStart = input.indexOf("");
+                 int indexEnd = input.indexOf("</span>");
+                 String modelPrice = input.substring(indexEnd, indexEnd);
+                 double wr = Double.parseDouble(modelPrice);
+    		
+                 if (r > wr) {
+                	 System.out.println("The store price of "+name+" is superior at $"+r+"!  What a deal!");
+                 }
+                 else if (r == wr) {
+                	 System.out.println("The price is the same in store and online.  Might as well buy from us since you're already here.");
+                 }
+                 else { 
+                	 System.out.println("The online price of "+name+" is better at $"+r+".  It must be counterfeit..."); }
+             }
+                 stat.close();
+                 in2.close();
     		}
-    		else if (r == wr) {
-    			System.out.println("The price is the same in store and online.  Might as well buy from us since you're already here.");
-    		}
-    		else { 
-    			System.out.println("The online price of "+name2+" is better at $"+r+".  It must be counterfeit..."); }
-    		stat.close();
-    	}
+    	*/
     	
+    	//Returns all information on a single product
     	public static void getProduct(int pid) throws SQLException {
     		Connection conn = SimpleDataSource.getConnection();
     		Statement stat = conn.createStatement();	
